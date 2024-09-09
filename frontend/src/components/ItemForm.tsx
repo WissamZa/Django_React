@@ -16,7 +16,7 @@ const ItemForm: React.FC<ItemFormProps> = ({ addItem }) => {
       // Send POST request to the API
       const response = await axios.post('http://localhost:8000/api/items/', {
         title,
-        description
+        description,
       });
 
       // Add the new item to the list after successful submission

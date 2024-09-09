@@ -7,16 +7,20 @@ const baseApiURL = "http://localhost:8000/api"
 const App: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);  // State to hold items
   const [loading, setLoading] = useState<boolean>(true);  // Loading state
+  const [error, setError] = useState<string | null>(null);  // Error state
 
   // Function to fetch items from the API
   const fetchItems = async () => {
     try {
       const response = await axios.get(`${baseApiURL}/items/`);
       setItems(response.data);  // Set fetched items to state
+      setError(null)
       setLoading(false);  // Set loading to false when data is fetched
     } catch (error) {
       console.error("Error fetching items:", error);
       setLoading(false);  // Ensure loading is turned off in case of an error
+      setError("Failed to load items. The backend server might be down")
+
     }
   };
 
@@ -35,6 +39,9 @@ const App: React.FC = () => {
       <h1>Item Management</h1>
       {/* Pass the addItem function to ItemForm */}
       <ItemForm addItem={addItem} />
+
+      {/* Display error message if there's an error */}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {/* Display a loading message or the list of items */}
       {loading ? (
